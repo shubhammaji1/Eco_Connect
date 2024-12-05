@@ -1,0 +1,116 @@
+/* Chatbot container */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Hidden position */
+  .chatbot-container.closed {
+    right: -280px; /* Hides the chatbot off-screen */
+  }
+  
+  /* Visible position */
+  .chatbot-container.open {
+    right: 20px;
+  }
+  
+  /* Chatbot header */
+  .chatbot-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  /* Chatbot content */
+  .chatbot-content {
+    background-color: white;
+    padding: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Messages section */
+  .messages {
+    height: 200px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Message bubble */
+  .message {
+    max-width: 80%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+  
+  .message.user {
+    background-color: #d14765;
+    align-self: flex-end;
+  }
+  
+  .message.bot {
+    background-color: #92a345;
+    align-self: flex-start;
+  }
+  
+  /* Input area */
+  .input-area {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .input-area input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .input-area button {
+    padding: 8px 12px;
+    margin-left: 10px;
+    background-color: #4CAF50;
+    color: rgb(14, 12, 12);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .input-area button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 768px) {
+    .chatbot-container {
+      width: 100%;
+      bottom: 0;
+      right: 0;
+    }
+  
+    .chatbot-container.closed {
+      right: -100%;
+    }
+  
+    .chatbot-container.open {
+      right: 0;
+    }
+  }
+  

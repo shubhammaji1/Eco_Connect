@@ -1,0 +1,104 @@
+html{
+  scroll-snap-type: Y mandatory;
+}
+.video-player {
+  height: 100vh;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  scroll-snap-align: start;
+}
+
+.video {
+  width: calc(33.333% - 20px);
+  margin: 10px;
+  aspect-ratio: 9 / 16;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.video:hover {
+  cursor: pointer;
+}
+
+
+.video-content {
+  margin-left: 270px;
+  width: calc(100% - 270px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+/* Responsive styles */
+
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {
+  .video {
+    width: calc(50% - 20px);
+  }
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+  .video-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .video {
+    width: calc(50% - 10px);
+    margin: 5px;
+  }
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+  .video-player {
+    height: auto;
+    max-width: 100%;
+  }
+
+  .video {
+    width: 100%;
+    margin: 10px 0;
+  }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .video-content {
+    padding: 5px;
+  }
+
+  .video {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+/* Adjust sidebar for smaller screens */
+@media (max-width: 991.98px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+
+  .video-content {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+/* For very small screens, ensure minimum video size */
+@media (max-width: 320px) {
+  .video {
+    min-width: 250px;
+    min-height: 250px;
+  }
+}
