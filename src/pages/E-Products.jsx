@@ -3,12 +3,12 @@ import { Search, ShoppingCart } from 'lucide-react';
 import '../../public/css/eProducts.css';
 
 const products = [
-  { id: 1, name: "Eco-friendly Water Bottle", price: 15.99, category: "Kitchen", image: "/placeholder.svg?height=200&width=200" },
-  { id: 2, name: "Bamboo Toothbrush Set", price: 9.99, category: "Bathroom", image: "/placeholder.svg?height=200&width=200" },
-  { id: 3, name: "Reusable Produce Bags", price: 12.99, category: "Kitchen", image: "/placeholder.svg?height=200&width=200" },
-  { id: 4, name: "Solar-powered Charger", price: 29.99, category: "Electronics", image: "/placeholder.svg?height=200&width=200" },
-  { id: 5, name: "Recycled Paper Notebook", price: 7.99, category: "Stationery", image: "/placeholder.svg?height=200&width=200" },
-  { id: 6, name: "Organic Cotton T-shirt", price: 19.99, category: "Clothing", image: "/placeholder.svg?height=200&width=200" },
+  { id: 1, name: "Eco-friendly Water Bottle", price: 15.99, category: "Kitchen", image: "/images/image1.webp?height=200&width=200" },
+  { id: 2, name: "Bamboo Toothbrush Set", price: 9.99, category: "Bathroom", image: "/images/image2.webp?height=200&width=200" },
+  { id: 3, name: "Reusable Produce Bags", price: 12.99, category: "Kitchen", image: "/images/image3.webp?height=200&width=200" },
+  { id: 4, name: "Solar-powered Charger", price: 29.99, category: "Electronics", image: "/images/image4.webp?height=200&width=200" },
+  { id: 5, name: "Recycled Paper Notebook", price: 7.99, category: "Stationery", image: "/images/image5.webp?height=200&width=200" },
+  { id: 6, name: "Organic Cotton T-shirt", price: 19.99, category: "Clothing", image: "/images/image6.webp?height=200&width=200" },
 ];
 
 export function EProducts() {
