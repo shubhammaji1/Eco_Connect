@@ -3,9 +3,9 @@ import { Star, ShoppingBag } from 'lucide-react';
 import '../../public/css/ecoNest.css';
 
 const products = [
-  { id: 1, name: 'Bamboo Picture Frame', price: 24.99, description: 'Eco-friendly frame made from sustainable bamboo.', rating: 4.5, image: "/placeholder.svg?height=200&width=200" },
-  { id: 2, name: 'Recycled Glass Vase', price: 39.99, description: 'Beautiful vase crafted from recycled glass.', rating: 4.2, image: "/placeholder.svg?height=200&width=200" },
-  { id: 3, name: 'Organic Cotton Throw Pillow', price: 29.99, description: 'Soft and comfortable pillow made with organic cotton.', rating: 4.7, image: "/placeholder.svg?height=200&width=200" },
+  { id: 1, name: 'Bamboo Picture Frame', price: 24.99, description: 'Eco-friendly frame made from sustainable bamboo.', rating: 4.5, image: "/images/image7.webp?height=200&width=200" },
+  { id: 2, name: 'Recycled Glass Vase', price: 39.99, description: 'Beautiful vase crafted from recycled glass.', rating: 4.2, image: "/images/image8.webp?height=200&width=200" },
+  { id: 3, name: 'Organic Cotton Throw Pillow', price: 29.99, description: 'Soft and comfortable pillow made with organic cotton.', rating: 4.7, image: "/images/image9.webp?height=200&width=200" },
 ];
 
 export function EcoNestDecor() {
