@@ -29,7 +29,7 @@ function LoginForm({ onLogin, onToggleForm }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="auth-form">
+    <form onSubmit={handleSubmit} className="auth-form" method='POST'>
       <h2>Login to VendorVault</h2>
       {error && <p className="error-message">{error}</p>}
       <div className="input-group">
