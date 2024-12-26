@@ -78,7 +78,7 @@ function SignupForm({ onToggleForm }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="auth-form">
+    <form onSubmit={handleSubmit} className="auth-form" method='POST'>
       <h2>Sign up for VendorVault</h2>
       {error && <p className="error-message">{error}</p>}
       <div className="input-group">
