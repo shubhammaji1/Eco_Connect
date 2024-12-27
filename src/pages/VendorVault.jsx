@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { User, Lock, Mail, Upload, Edit, Trash2, DollarSign, BarChart2, Package } from 'lucide-react';
 import '../../public/css/vendorVault.css';
+import { logIn, signUp } from '../api';
 
 // Simulated user data (replace with actual authentication and API calls in a real app)
 const existingUser = {
@@ -18,13 +19,14 @@ function LoginForm({ onLogin, onToggleForm }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    if (email === existingUser.email && password === existingUser.password) {
-      onLogin(existingUser);
-    } else {
-      setError('Invalid credentials. Please try again.');
+    try {
+      const { data } = await logIn({ email, password });
+      onLogin(data.user);
+    } catch (error) {
+      setError(error.response?.data?.error || 'Login failed');
     }
   };
 
@@ -65,16 +67,21 @@ function SignupForm({ onToggleForm }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
-    // In a real app, you would send this data to your backend
-    alert('Sign up successful! Please log in with your new account.');
-    onToggleForm();
+  
+    try {
+      await signUp({ name, email, password });
+      alert('Sign up successful! Please log in.');
+      onToggleForm();
+    } catch (error) {
+      setError(error.response?.data?.error || 'Signup failed');
+    }
   };
 
   return (
