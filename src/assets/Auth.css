@@ -1,0 +1,23 @@
+.auth-form {
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  .input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+  }
+  
+  .input-icon {
+    margin-right: 0.5em;
+  }
+  
+  .submit-btn {
+    background: #4caf50;
+    color: white;
+    padding: 0.5em 1em;
+    border: none;
+    cursor: pointer;
+  }
+  
