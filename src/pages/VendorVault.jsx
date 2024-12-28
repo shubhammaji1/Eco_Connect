@@ -3,7 +3,7 @@ import { User, Lock, Mail, Upload, Edit, Trash2, DollarSign, BarChart2, Package 
 import '../../public/css/vendorVault.css';
 import { logIn, signUp } from '../api';
 
-// Simulated user data (replace with actual authentication and API calls in a real app)
+
 const existingUser = {
   email: 'vendor@example.com',
   password: 'password123',
