@@ -14,17 +14,10 @@ function LoginForm({ onLogin, onToggleForm }) {
     e.preventDefault();
     setError('');
     try {
-      const user = {
-        email: 'vendor@example.com',
-        name: 'Eco Vendor',
-        products: [
-          { id: 1, name: 'Eco-friendly Water Bottle', price: 15.99, stock: 50, sales: 120, image: "/placeholder.svg?height=200&width=200" },
-          { id: 2, name: 'Bamboo Utensil Set', price: 12.99, stock: 30, sales: 85, image: "/placeholder.svg?height=200&width=200" },
-        ],
-      };
-      onLogin(user); // Mock login
+      const { data } = await logIn({ email, password });
+      onLogin(data.user);
     } catch (error) {
-      setError('Login failed');
+      setError(error.response?.data?.error || 'Login failed');
     }
   };
 
@@ -72,8 +65,14 @@ function SignupForm({ onToggleForm }) {
       setError('Passwords do not match.');
       return;
     }
-    alert('Sign up successful! Please log in.');
-    onToggleForm();
+  
+    try {
+      await signUp({ name, email, password });
+      alert('Sign up successful! Please log in.');
+      onToggleForm();
+    } catch (error) {
+      setError(error.response?.data?.error || 'Signup failed');
+    }
   };
 
   return (
