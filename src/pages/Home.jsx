@@ -32,8 +32,8 @@ const Home = () => {
           <img src="images/pic3.jpg" alt="Slide 4" />
           <img src="images/pic5.jpg" alt="Slide 5" />
         </div>
-        <button className="prev" onClick={() => moveSlide(-1)}>&#10094;</button>
-        <button className="next" onClick={() => moveSlide(1)}>&#10095;</button>
+        <button className="prev EcoButton" onClick={() => moveSlide(-1)}>&#10094;</button>
+        <button className="next EcoButton" onClick={() => moveSlide(1)}>&#10095;</button>
       </div>
 
       {/* Solutions Section */}
