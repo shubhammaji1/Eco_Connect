@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { User, Lock, Mail, Upload, Edit, Trash2, DollarSign, BarChart2, Package } from 'lucide-react';
+import { User, Lock, Mail } from 'lucide-react';
 import '../../public/css/vendorVault.css';
 import { logIn, signUp } from '../api';
 import VendorDashboard from './VenderDashboard';
-
 
 function LoginForm({ onLogin, onToggleForm }) {
   const [email, setEmail] = useState('');
@@ -46,7 +45,12 @@ function LoginForm({ onLogin, onToggleForm }) {
         />
       </div>
       <button type="submit" className="submit-btn">Login</button>
-      <p>Don't have an account? <button type="button" onClick={onToggleForm} className="toggle-form-btn">Sign up</button></p>
+      <p>
+        Don't have an account?{' '}
+        <button type="button" onClick={onToggleForm} className="toggle-form-btn">
+          Sign up
+        </button>
+      </p>
     </form>
   );
 }
@@ -65,7 +69,6 @@ function SignupForm({ onToggleForm }) {
       setError('Passwords do not match.');
       return;
     }
-  
     try {
       await signUp({ name, email, password });
       alert('Sign up successful! Please log in.');
@@ -120,7 +123,12 @@ function SignupForm({ onToggleForm }) {
         />
       </div>
       <button type="submit" className="submit-btn">Sign Up</button>
-      <p>Already have an account? <button type="button" onClick={onToggleForm} className="toggle-form-btn">Login</button></p>
+      <p>
+        Already have an account?{' '}
+        <button type="button" onClick={onToggleForm} className="toggle-form-btn">
+          Login
+        </button>
+      </p>
     </form>
   );
 }
@@ -142,12 +150,10 @@ export function VendorVault() {
       <h1>VendorVault</h1>
       {user ? (
         <VendorDashboard user={user} />
+      ) : isLogin ? (
+        <LoginForm onLogin={handleLogin} onToggleForm={toggleForm} />
       ) : (
-        isLogin ? (
-          <LoginForm onLogin={handleLogin} onToggleForm={toggleForm} />
-        ) : (
-          <SignupForm onToggleForm={toggleForm} />
-        )
+        <SignupForm onToggleForm={toggleForm} />
       )}
     </div>
   );

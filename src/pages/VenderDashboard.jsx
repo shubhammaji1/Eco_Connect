@@ -3,7 +3,7 @@ import { DollarSign, Edit, Trash2, BarChart2, Package, Upload } from 'lucide-rea
 import '../../public/css/vendorDashboard.css'; // Ensure this file exists for styling
 
 function VendorDashboard({ user }) {
-  const [products, setProducts] = useState(user.products);
+  const [products, setProducts] = useState(user.products || []);
   const [newProduct, setNewProduct] = useState({ name: '', price: '', stock: '' });
   const [editingProduct, setEditingProduct] = useState(null);
   const [dashboardView, setDashboardView] = useState('products');
