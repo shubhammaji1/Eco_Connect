@@ -1,33 +1,36 @@
 import React, { useState } from 'react';
 import { DollarSign, Edit, Trash2, BarChart2, Package, Upload } from 'lucide-react';
-import '../../public/css/vendorDashboard.css'; // Ensure this file exists for styling
+import '../../public/css/vendorDashboard.css';
 
 function VendorDashboard({ user }) {
-  const [products, setProducts] = useState(user.products || []);
+  const [products, setProducts] = useState(user.products || []); // Initialize with user products or an empty array
   const [newProduct, setNewProduct] = useState({ name: '', price: '', stock: '' });
   const [editingProduct, setEditingProduct] = useState(null);
   const [dashboardView, setDashboardView] = useState('products');
 
+  // Add a new product
   const handleAddProduct = (e) => {
     e.preventDefault();
     const productToAdd = {
       ...newProduct,
-      id: products.length + 1,
+      id: products.length + 1, // Unique ID
       sales: 0,
-      image: "/placeholder.svg?height=200&width=200"
+      image: '/placeholder.svg?height=200&width=200', // Placeholder image
     };
     setProducts([...products, productToAdd]);
     setNewProduct({ name: '', price: '', stock: '' });
   };
 
+  // Edit a product
   const handleEditProduct = (product) => {
-    setEditingProduct(product);
+    setEditingProduct(product); // Set the product to edit
     setNewProduct({ name: product.name, price: product.price, stock: product.stock });
   };
 
+  // Update the product
   const handleUpdateProduct = (e) => {
     e.preventDefault();
-    const updatedProducts = products.map(p =>
+    const updatedProducts = products.map((p) =>
       p.id === editingProduct.id ? { ...p, ...newProduct } : p
     );
     setProducts(updatedProducts);
@@ -35,13 +38,14 @@ function VendorDashboard({ user }) {
     setNewProduct({ name: '', price: '', stock: '' });
   };
 
+  // Delete a product
   const handleDeleteProduct = (productId) => {
-    const updatedProducts = products.filter(p => p.id !== productId);
+    const updatedProducts = products.filter((p) => p.id !== productId);
     setProducts(updatedProducts);
   };
 
-  const totalSales = products.reduce((sum, product) => sum + (product.price * product.sales), 0);
-  const totalStock = products.reduce((sum, product) => sum + parseInt(product.stock), 0);
+  const totalSales = products.reduce((sum, product) => sum + product.price * product.sales, 0);
+  const totalStock = products.reduce((sum, product) => sum + parseInt(product.stock, 10), 0);
 
   return (
     <div className="vendor-dashboard">
@@ -71,7 +75,9 @@ function VendorDashboard({ user }) {
                   <div key={product.id} className="product-card">
                     <img src={product.image} alt={product.name} className="product-image" />
                     <h4>{product.name}</h4>
-                    <p className="price"><DollarSign size={14} /> {product.price.toFixed(2)}</p>
+                    <p className="price">
+                      <DollarSign size={14} /> {parseFloat(product.price).toFixed(2)}
+                    </p>
                     <p>Stock: {product.stock}</p>
                     <div className="product-actions">
                       <button onClick={() => handleEditProduct(product)} className="edit-btn">
@@ -134,7 +140,9 @@ function VendorDashboard({ user }) {
           <div className="analytics-cards">
             <div className="analytics-card">
               <h4>Total Sales</h4>
-              <p><DollarSign size={18} /> {totalSales.toFixed(2)}</p>
+              <p>
+                <DollarSign size={18} /> {totalSales.toFixed(2)}
+              </p>
             </div>
             <div className="analytics-card">
               <h4>Products</h4>
@@ -144,16 +152,6 @@ function VendorDashboard({ user }) {
               <h4>Total Stock</h4>
               <p>{totalStock}</p>
             </div>
-          </div>
-          <div className="sales-by-product">
-            <h4>Sales by Product</h4>
-            {products.map(product => (
-              <div key={product.id} className="sales-item">
-                <span>{product.name}</span>
-                <span>{product.sales} sold</span>
-                <span><DollarSign size={14} /> {(product.price * product.sales).toFixed(2)}</span>
-              </div>
-            ))}
           </div>
         </div>
       )}
