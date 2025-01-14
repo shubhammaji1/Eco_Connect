@@ -1,0 +1,113 @@
+/* Overall Container */
+.terms-container {
+    font-family: 'Arial', sans-serif;
+    margin: 0 auto;
+    padding: 2rem;
+    max-width: 800px;
+    background: linear-gradient(135deg, #f9f9f9, #ffffff);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1.5s ease-in-out;
+  }
+  
+  /* Title and Subtitle */
+  .terms-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .terms-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  /* Terms List */
+  .terms-list {
+    margin-top: 1rem;
+  }
+  
+  /* Terms Item */
+  .terms-item {
+    margin-bottom: 1rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .terms-item.active {
+    transform: scale(1.02);
+  }
+  
+  /* Header Section */
+  .terms-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f7f7f7;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .terms-header:hover {
+    background-color: #eeeeee;
+  }
+  
+  .terms-header h2 {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0;
+  }
+  
+  .toggle-icon {
+    font-size: 1.5rem;
+    color: #888;
+    user-select: none;
+    transition: transform 0.3s ease;
+  }
+  
+  .terms-item.active .toggle-icon {
+    transform: rotate(180deg);
+  }
+  
+  /* Content Section */
+  .terms-content {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 1rem;
+    background-color: #ffffff;
+    color: #555;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+  
+  .terms-content.expanded {
+    max-height: 300px;
+    padding: 1rem;
+  }
+  
+  .terms-content p {
+    margin: 0;
+    line-height: 1.5;
+    font-size: 1rem;
+  }
+  
+  /* Fade-in Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

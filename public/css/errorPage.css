@@ -1,0 +1,136 @@
+/* Error Page Container */
+.error-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    padding: 2rem;
+    font-family: "Poppins", Arial, sans-serif;
+    /* background: linear-gradient(135deg, #007bff, #6c63ff); */
+    color: #fff;
+    overflow: hidden; /* Ensure no overflow issues */
+  }
+  
+  /* Error Text Container */
+  #error-text {
+    margin-bottom: 2rem;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Image Styling */
+  #error-text img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: float 3s infinite ease-in-out;
+  }
+  
+  /* Floating Animation for Image */
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  /* Primary Text */
+  .p-a {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+  }
+  
+  /* Secondary Text */
+  .p-b {
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+    color: #f3f3f3;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Button Styling */
+  .errorBtn {
+    padding: 0.75rem 2rem;
+    background: linear-gradient(135deg, #6c63ff, #007bff);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-top: 1rem;
+  }
+  
+  .errorBtn:hover {
+    background: linear-gradient(135deg, #0056b3, #4b4cff);
+    transform: scale(1.05);
+  }
+  
+  .errorBtn:active {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .p-a {
+      font-size: 1.5rem;
+    }
+  
+    .p-b {
+      font-size: 1rem;
+    }
+  
+    .errorBtn {
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+    }
+  
+    #error-text img {
+      max-width: 350px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .p-a {
+      font-size: 1.25rem;
+    }
+  
+    .p-b {
+      font-size: 0.875rem;
+    }
+  
+    .errorBtn {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+  
+    #error-text img {
+      max-width: 300px;
+    }
+  }
+  

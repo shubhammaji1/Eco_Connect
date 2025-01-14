@@ -1,0 +1,122 @@
+.privacy-policy-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    max-width: 100%;
+    height: 100%;
+  }
+  
+  /* Privacy Header */
+  .privacyPolicy-header {
+    margin-bottom: 1.5rem;
+    animation: fadeIn 1.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+  }
+  
+  .privacy-header h1 {
+    font-size: 3rem;
+    color: #2d3e50;
+    /* margin-bottom: 0.5rem; */
+    font-weight: 700;
+    text-transform: uppercase; /* Added uppercase for emphasis */
+  }
+  
+  .privacy-header p {
+    font-size: 1.2rem;
+    color: #6c757d;
+    max-width: 900px;
+  }
+  
+  /* Section Styling */
+  .policy-content {
+    width: 100%;
+    max-width: 900px;
+    padding: 1rem;
+  }
+  
+  /* Content Cards */
+  .content-card {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .content-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .content-card h2 {
+    font-size: 1.8rem;
+    color: #2d3e50;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+  }
+  
+  .content-card p {
+    font-size: 1rem;
+    color: #6c757d;
+    line-height: 1.6;
+  }
+  
+  /* Footer */
+  .privacy-footer {
+    margin-top: auto;
+    padding: 1rem;
+    background-color: #2d3e50;
+    color: #fff;
+    width: 100%;
+  }
+  
+  .privacy-footer p {
+    font-size: 0.9rem;
+  }
+  
+  /* Fade In Animation */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .privacy-header h1 {
+      font-size: 2.5rem;
+    }
+  
+    .content-card h2 {
+      font-size: 1.5rem;
+    }
+  
+    .content-card p {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .privacy-header h1 {
+      font-size: 2rem;
+    }
+  
+    .content-card h2 {
+      font-size: 1.3rem;
+    }
+  
+    .content-card p {
+      font-size: 0.85rem;
+    }
+  }
+  
