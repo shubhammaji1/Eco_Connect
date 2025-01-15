@@ -1,135 +1,115 @@
 import React, { useState } from 'react';
-import { DollarSign, Edit, Trash2, BarChart2, Package, Upload } from 'lucide-react';
+import { DollarSign, Package, Lock, Upload, BarChart2, User } from 'lucide-react';
 import '../../public/css/vendorDashboard.css';
 
-function VendorDashboard({ user }) {
-  const [products, setProducts] = useState(user.products || []); // Initialize with user products or an empty array
-  const [newProduct, setNewProduct] = useState({ name: '', price: '', stock: '' });
-  const [editingProduct, setEditingProduct] = useState(null);
+function VendorDashboard({ user, changePassword }) {
+  const [products, setProducts] = useState(user.products || []);
+  const [newProduct, setNewProduct] = useState({ name: '', price: '', stock: '', image: '' });
   const [dashboardView, setDashboardView] = useState('products');
+  const [passwordChange, setPasswordChange] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
+  const [passwordError, setPasswordError] = useState('');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  // Add a new product
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setNewProduct({ ...newProduct, image: reader.result });
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleAddProduct = (e) => {
     e.preventDefault();
-    const productToAdd = {
-      ...newProduct,
-      id: products.length + 1, // Unique ID
-      sales: 0,
-      image: '/placeholder.svg?height=200&width=200', // Placeholder image
-    };
-    setProducts([...products, productToAdd]);
-    setNewProduct({ name: '', price: '', stock: '' });
+    setProducts([...products, { ...newProduct, id: products.length + 1, sales: 0 }]);
+    setNewProduct({ name: '', price: '', stock: '', image: '' });
   };
 
-  // Edit a product
-  const handleEditProduct = (product) => {
-    setEditingProduct(product); // Set the product to edit
-    setNewProduct({ name: product.name, price: product.price, stock: product.stock });
-  };
-
-  // Update the product
-  const handleUpdateProduct = (e) => {
+  const handlePasswordChange = async (e) => {
     e.preventDefault();
-    const updatedProducts = products.map((p) =>
-      p.id === editingProduct.id ? { ...p, ...newProduct } : p
-    );
-    setProducts(updatedProducts);
-    setEditingProduct(null);
-    setNewProduct({ name: '', price: '', stock: '' });
-  };
-
-  // Delete a product
-  const handleDeleteProduct = (productId) => {
-    const updatedProducts = products.filter((p) => p.id !== productId);
-    setProducts(updatedProducts);
+    if (passwordChange.newPassword !== passwordChange.confirmPassword) {
+      setPasswordError('New passwords do not match.');
+      return;
+    }
+    try {
+      await changePassword({
+        currentPassword: passwordChange.currentPassword,
+        newPassword: passwordChange.newPassword,
+      });
+      alert('Password changed successfully!');
+      setPasswordChange({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      setPasswordError('');
+    } catch (error) {
+      setPasswordError('Failed to change password. Please try again.');
+    }
   };
 
   const totalSales = products.reduce((sum, product) => sum + product.price * product.sales, 0);
   const totalStock = products.reduce((sum, product) => sum + parseInt(product.stock, 10), 0);
 
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+
   return (
     <div className="vendor-dashboard">
       <h2>Welcome, {user.name}!</h2>
+
+      {/* Profile dropdown */}
+      <div className="profile-dropdown">
+        <div className="profile-logo" onClick={toggleDropdown}>
+          <img src={user.profileImage || 'https://avatar.iran.liara.run/public/6'} alt="Profile" className="profile-logo-img" />
+        </div>
+        {dropdownOpen && (
+          <div className="profile-dropdown-menu">
+            <button onClick={() => setDashboardView('profile')}>Profile Details</button>
+            <button onClick={() => setDashboardView('changePassword')}>Change Password</button>
+          </div>
+        )}
+      </div>
+
       <nav className="dashboard-nav">
-        <button
-          onClick={() => setDashboardView('products')}
-          className={dashboardView === 'products' ? 'active' : ''}
-        >
-          <Package /> Products
-        </button>
-        <button
-          onClick={() => setDashboardView('analytics')}
-          className={dashboardView === 'analytics' ? 'active' : ''}
-        >
-          <BarChart2 /> Analytics
-        </button>
+        {['products', 'analytics'].map((view) => (
+          <button
+            key={view}
+            onClick={() => setDashboardView(view)}
+            className={dashboardView === view ? 'active' : ''}
+          >
+            {view === 'products' ? <Package /> : <BarChart2 />}
+            {view.charAt(0).toUpperCase() + view.slice(1)}
+          </button>
+        ))}
       </nav>
 
       {dashboardView === 'products' && (
         <>
           <div className="product-list">
             <h3>Your Products</h3>
-            {products.length > 0 ? (
+            {products.length ? (
               <div className="product-grid">
                 {products.map((product) => (
                   <div key={product.id} className="product-card">
-                    <img src={product.image} alt={product.name} className="product-image" />
+                    <img src={product.image || '/placeholder.svg'} alt={product.name} className="product-image" />
                     <h4>{product.name}</h4>
-                    <p className="price">
-                      <DollarSign size={14} /> {parseFloat(product.price).toFixed(2)}
-                    </p>
+                    <p className="price"><DollarSign size={14} /> {parseFloat(product.price).toFixed(2)}</p>
                     <p>Stock: {product.stock}</p>
-                    <div className="product-actions">
-                      <button onClick={() => handleEditProduct(product)} className="edit-btn">
-                        <Edit size={14} /> Edit
-                      </button>
-                      <button onClick={() => handleDeleteProduct(product.id)} className="delete-btn">
-                        <Trash2 size={14} /> Delete
-                      </button>
-                    </div>
                   </div>
                 ))}
               </div>
-            ) : (
-              <p>You haven't added any products yet.</p>
-            )}
+            ) : <p>You haven't added any products yet.</p>}
           </div>
-          <form onSubmit={editingProduct ? handleUpdateProduct : handleAddProduct} className="add-product-form">
-            <h3>{editingProduct ? 'Update Product' : 'Add New Product'}</h3>
-            <input
-              type="text"
-              placeholder="Product Name"
-              value={newProduct.name}
-              onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-              required
-            />
-            <input
-              type="number"
-              placeholder="Price"
-              value={newProduct.price}
-              onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-              required
-            />
-            <input
-              type="number"
-              placeholder="Stock"
-              value={newProduct.stock}
-              onChange={(e) => setNewProduct({ ...newProduct, stock: e.target.value })}
-              required
-            />
-            <button type="submit" className="upload-btn">
-              {editingProduct ? (
-                <>
-                  <Edit className="btn-icon" />
-                  Update Product
-                </>
-              ) : (
-                <>
-                  <Upload className="btn-icon" />
-                  Add Product
-                </>
-              )}
-            </button>
+          <form onSubmit={handleAddProduct} className="add-product-form">
+            <h3>Add New Product</h3>
+            {['name', 'price', 'stock'].map((field) => (
+              <input
+                key={field}
+                type={field === 'price' || field === 'stock' ? 'number' : 'text'}
+                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                value={newProduct[field]}
+                onChange={(e) => setNewProduct({ ...newProduct, [field]: e.target.value })}
+                required
+              />
+            ))}
+            <input type="file" accept="image/*" onChange={handleFileChange} required />
+            <button type="submit" className="upload-btn"><Upload className="btn-icon" /> Add Product</button>
           </form>
         </>
       )}
@@ -140,9 +120,7 @@ function VendorDashboard({ user }) {
           <div className="analytics-cards">
             <div className="analytics-card">
               <h4>Total Sales</h4>
-              <p>
-                <DollarSign size={18} /> {totalSales.toFixed(2)}
-              </p>
+              <p><DollarSign size={18} /> {totalSales.toFixed(2)}</p>
             </div>
             <div className="analytics-card">
               <h4>Products</h4>
@@ -153,6 +131,37 @@ function VendorDashboard({ user }) {
               <p>{totalStock}</p>
             </div>
           </div>
+        </div>
+      )}
+
+      {dashboardView === 'changePassword' && (
+        <div className="change-password">
+          <h3>Change Password</h3>
+          <form onSubmit={handlePasswordChange} className="password-change-form">
+            {passwordError && <p className="error-message">{passwordError}</p>}
+            <input
+              type="password"
+              placeholder="Current Password"
+              value={passwordChange.currentPassword}
+              onChange={(e) => setPasswordChange({ ...passwordChange, currentPassword: e.target.value })}
+              required
+            />
+            <input
+              type="password"
+              placeholder="New Password"
+              value={passwordChange.newPassword}
+              onChange={(e) => setPasswordChange({ ...passwordChange, newPassword: e.target.value })}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Confirm New Password"
+              value={passwordChange.confirmPassword}
+              onChange={(e) => setPasswordChange({ ...passwordChange, confirmPassword: e.target.value })}
+              required
+            />
+            <button type="submit" className="submit-btn">Update Password</button>
+          </form>
         </div>
       )}
     </div>
