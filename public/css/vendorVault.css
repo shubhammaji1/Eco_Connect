@@ -96,6 +96,9 @@ input {
 .toggle-form-btn:hover {
   color: #72edf2;
 }
+.vendorvault-signup{
+  color: black;
+}
 
 @keyframes slideIn {
   from {

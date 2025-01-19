@@ -35,14 +35,14 @@ const Chatbot = () => {
   // Function to generate chatbot response (simple rule-based)
   const generateResponse = (userMessage) => {
     // Simple predefined responses based on user input
-    if (userMessage.toLowerCase().includes('hello')) {
+    if (userMessage.toLowerCase().includes('hi')) {
       return 'Hi there! How can I assist you today?';
     } else if (userMessage.toLowerCase().includes('help')) {
       return 'Sure! I am here to help. What do you need assistance with?';
     } else if (userMessage.toLowerCase().includes('bye')) {
       return 'Goodbye! Have a great day!';
     } else {
-      return 'I\'m not sure how to respond to that. Could you clarify?';
+      return 'I\'m not sure how to respond to that. Our team will get back to you soon.';
     }
   };
 
@@ -61,6 +61,7 @@ const Chatbot = () => {
   return (
     <div className={`chatbot-container ${isOpen ? 'open' : 'closed'}`}>
       <div className="chatbot-header" onClick={toggleChatbot}>
+        <img  src="images\roboticon.gif" alt="Chatbot" />
         {isOpen ? 'Close Chat' : 'Open Chat'}
       </div>
 
@@ -76,7 +77,7 @@ const Chatbot = () => {
           <div className="input-area">
             <input
               type="text"
-              placeholder="Type your message..."
+              placeholder="Type Hi"
               value={input}
               onChange={handleInputChange}
               onKeyPress={handleKeyPress}  // Send message on Enter key press

@@ -1,40 +1,153 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Chatbot from "../components/ChatBot/chatbot";
+import { Link, Element } from "react-scroll";
+import {useInView} from "framer-motion"; // Import framer-motion
+import { TbMoodSearch } from "react-icons/tb";
 import '../../public/css/styles.css';
 
 const Home = () => {
+
+  const [sliderItems, setSliderItems] = useState([1, 2, 3, 4]); // Example item IDs
+  const [thumbnails, setThumbnails] = useState([1, 2, 3, 4]); // Example thumbnail IDs
+  const carouselRef = useRef(null);
+
+  const timeRunning = 3000; // Animation duration
+  const timeAutoNext = 7000; // Auto-next slide duration
+  const autoNextRef = useRef(null);
+
+
+  // Function to handle slider transitions
+  const showSlider = (type) => {
+    if (!carouselRef.current) return;
+
+    carouselRef.current.classList.remove('next', 'prev'); // Reset classes
+
+    setTimeout(() => {
+      const updatedSliderItems = [...sliderItems];
+      const updatedThumbnails = [...thumbnails];
+
+      if (type === 'next') {
+        updatedSliderItems.push(updatedSliderItems.shift());
+        updatedThumbnails.push(updatedThumbnails.shift());
+        carouselRef.current.classList.add('next');
+      } else if (type === 'prev') {
+        updatedSliderItems.unshift(updatedSliderItems.pop());
+        updatedThumbnails.unshift(updatedThumbnails.pop());
+        carouselRef.current.classList.add('prev');
+      }
+
+      setSliderItems(updatedSliderItems);
+      setThumbnails(updatedThumbnails);
+
+      setTimeout(() => {
+        carouselRef.current.classList.remove('next', 'prev');
+      }, timeRunning); // Remove animation class after animation ends
+    },50); // Small delay to ensure class re-addition triggers animation
+  };
+
+  // Auto slide logic
+  useEffect(() => {
+    const autoSlide = () => {
+      showSlider('next');
+    };
+
+    autoNextRef.current = setInterval(autoSlide, timeAutoNext);
+
+    return () => {
+      clearInterval(autoNextRef.current);
+    };
+  }, [sliderItems]);
+
+
   return (
     <div>
       <header>
         <div className="logo">
-          <span>EcoConnect</span>
+          <span>Eco</span>
+          <span>Connect</span>
         </div>
         <nav>
           <ul className="nav-links">
-            <li><a href="#home" className="active">Home</a></li>
+          <li><a href="#home" className="active">Home</a></li>
             <li><a href="/about">About</a></li>
-            <li><a href="/offerings">Offerings</a></li>
+            <Link to="offerings" smooth={true} duration={1000}>
+              <li className='headerpointer'><a>Offerings</a></li>
+            </Link>
             <li><a href="/blog">Blog</a></li>
-            <li><a href="#footer">Contact</a></li>
+            <Link to="footer" smooth={true} duration={1000}>
+              <li className='headerpointer'><a>Contact</a></li>
+            </Link>
           </ul>
           <div className="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span><a href="#home" className="active">Home</a></span>
+            <span><a href="#about">About</a></span>
+            <span><Link to="offerings" smooth={true} duration={1000}>
+              <li><a>Offerings</a></li>
+            </Link>
+            </span>
+            <span><li><a href="/blog">Blog</a></li></span>
+            <span>
+            <Link to="footer" smooth={true} duration={1000}>
+              <li><a>Contact</a></li>
+            </Link></span>
           </div>
         </nav>
       </header>
-      <script src="../../public/js/script.js"></script>
-      <div className="hero">
-        <div className="hero-images">
-          <img src="images/Hero-Section.jpg" alt="Slide 1" />
-          <img src="images/download.jpeg" alt="Slide 2" />
-          <img src="images/Heros.jpg" alt="Slide 3" />
-          <img src="images/pic3.jpg" alt="Slide 4" />
-          <img src="images/pic5.jpg" alt="Slide 5" />
+
+
+      {/* Carousel */}
+      <div className="carousel" ref={carouselRef}>
+        {/* List Items */}
+        <div className="list">
+          {sliderItems.map((item, index) => (
+            <div className="item" key={`slider-${index}`}>
+              <img src={`images/img${item}.jpg`} alt={`Carousel ${item}`} />
+              <div className="content">
+                <div className="author">PRC  SM  BP  KRSS</div>
+                <div className="title">Eco-Connect </div>
+                <div className="topic">THE FUTURE HOME</div>
+                <div className="des">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut sequi, rem magnam
+                  nesciunt minima placeat, itaque eum neque officiis unde, eaque optio ratione aliquid
+                  assumenda facere ab et quasi ducimus aut doloribus non numquam. Explicabo,
+                  laboriosam nisi reprehenderit tempora at laborum natus unde. Ut, exercitationem eum
+                  aperiam illo illum laudantium?
+                </div>
+                <div className="homesearch">
+                  <form action="/blog" method="get" class="search-bar">
+                    <input type="text" placeholder="Search anything..." />
+                    <button type='submit'><TbMoodSearch /></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-        <button className="prev EcoButton" onClick={() => moveSlide(-1)}>&#10094;</button>
-        <button className="next EcoButton" onClick={() => moveSlide(1)}>&#10095;</button>
+
+        {/* Thumbnail */}
+        <div className="thumbnail">
+          {thumbnails.map((item, index) => (
+            <div className="item" key={`thumbnail-${index}`}>
+              <img src={`images/img${item}.jpg`} alt={`Thumbnail ${item}`} />
+              <div className="content">
+                <div className="title">Name Slider</div>
+                <div className="description">Description</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Next and Previous Arrows */}
+        <div className="carousel-arrows">
+          <button id="prev" onClick={() => showSlider('prev')}> &lt;</button>
+          <button id="next" onClick={() => showSlider('next')}> &gt;</button>
+        </div>
+
+        {/* Time Running */}
+        <div className="time"></div>
       </div>
+
+
 
       {/* Solutions Section */}
       <section className="solutions">
@@ -72,7 +185,7 @@ const Home = () => {
       </section>
 
       {/* Key Offerings Section */}
-      <section className="offerings">
+      <section className="offerings" id="offerings">
         <p className="offerings-prefix">Driving Impact Through Purposeful Engagement</p>
         <h2>Our Key Offerings</h2>
         <div className="offerings-container">
@@ -97,6 +210,7 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Testimonial Section */}
       <section className="testimonial-section">
         <div className="testimonial-header">
           <h2>What Our Users Say</h2>
@@ -163,7 +277,7 @@ const Home = () => {
           <div className="footer-links">
             <h3>Resources</h3>
             <ul>
-              <li><a href="#">Sustainability Blog</a></li>
+              <li><a href="/feed">Sustainability Blog</a></li>
               <li><a href="/terms-and-conditions">Terms and Conditions</a></li>
               <li><a href="/privacy-policy">Privacy Policy</a></li>
               <li><a href="/refund-policy">Refund Policy</a></li>
@@ -182,7 +296,7 @@ const Home = () => {
           <p>© Copyright 2023 EcoConnect. All Rights Reserved.</p>
         </div>
       </footer>
-      
+      <Chatbot/>
     </div>
   );
 };

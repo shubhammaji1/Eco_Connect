@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import HomeIcon from "@mui/icons-material/Home";
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FeedIcon from "@mui/icons-material/Feed";
@@ -85,7 +86,8 @@ const SellOption = ({ isFolded, handleItemClick }) => {
 
 export const SidebarData = [
     { title: 'Home', icon: <HomeIcon />, path: "/"},
-    { title: 'Feeds', icon: <FeedIcon />, path: "#reel" },
+    { title: 'Reel', icon: <VideoLibraryIcon />, path: "#reel" },
+    { title: 'Feeds', icon: <FeedIcon />, path: "#feed" },
     { title: 'Create', icon: <AddBoxIcon />, path: "#create" },
 ];
 

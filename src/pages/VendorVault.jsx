@@ -45,7 +45,7 @@ function LoginForm({ onLogin, onToggleForm }) {
         />
       </div>
       <button type="submit" className="submit-btn">Login</button>
-      <p>
+      <p className='vendorvault-signup'>
         Don't have an account?{' '}
         <button type="button" onClick={onToggleForm} className="toggle-form-btn">
           Sign up
@@ -123,7 +123,7 @@ function SignupForm({ onToggleForm }) {
         />
       </div>
       <button type="submit" className="submit-btn">Sign Up</button>
-      <p>
+      <p className='vendorvault-signup'>
         Already have an account?{' '}
         <button type="button" onClick={onToggleForm} className="toggle-form-btn">
           Login
