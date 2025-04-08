@@ -1,6 +1,9 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import '../../public/css/about-us.css'
+import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import '../../public/css/about-us.css';
 
 const teamMembers = [
   { 
@@ -27,40 +30,40 @@ const teamMembers = [
     image: 'https://imgs.search.brave.com/sAAbEMCdik-672iclUuMaYTPz4iI8NyTDnu0dUuAfDE/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by93/b21hbi1ncmV5LWNs/b3RoZXMtc21pbGlu/Z18yMy0yMTQ3OTcw/NDc1LmpwZz9zZW10/PWFpc19oeWJyaWQ',
     bio: 'Shilpy brings creativity to every project he touches.'
   },
-]
+];
 
 export default function AboutUs() {
-  return (
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
 
+  return (
     <div className="about-container">
-      <header className="about-header">
+      <header className="about-header" data-aos="fade-down">
         <h1 className="about-title">About Us</h1>
         <p className="about-subtitle">Innovating for a better tomorrow</p>
       </header>
 
       {/* Team section */}
-      <section className="team-section">
+      <section className="team-section" data-aos="fade-up">
         <p className="about-definition">
           We are a team of dedicated professionals passionate about solving complex problems
           and making a meaningful impact through technology and innovation.
         </p>
         <h2 className="team-section-title">Our Amazing Team</h2>
         <div className="team-grid">
-          {teamMembers.map((member) => (
+          {teamMembers.map((member, idx) => (
             <motion.div
               key={member.name}
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
               className="team-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
             >
-              <div className="team-card-inner">
+              <div className="team-card-inner" data-aos="flip-left">
                 <div className="team-card-front">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="member-image"
-                  />
+                  <img src={member.image} alt={member.name} className="member-image" />
                 </div>
                 <div className="team-card-back">
                   <h3 className="member-name">{member.name}</h3>
@@ -74,7 +77,7 @@ export default function AboutUs() {
       </section>
 
       {/* Mission Section */}
-      <section className="mission-section">
+      <section className="mission-section" data-aos="fade-up">
         <h2 className="mission-title">Our Mission</h2>
         <p className="mission-text">
           We strive to create innovative solutions that make a positive impact on the world.
@@ -82,6 +85,45 @@ export default function AboutUs() {
           complex problems and improve people's lives.
         </p>
       </section>
+      <section className="values-section">
+  <h2 className="values-title">Our Core Values</h2>
+  <div className="values-grid">
+    <div className="value-card">
+      <i className="fas fa-leaf"></i>
+      <h3 className="value-title">Sustainability</h3>
+      <p className="value-description">We strive to protect the environment by promoting green practices and conscious innovation.</p>
     </div>
-  )
+    <div className="value-card">
+      <i className="fas fa-lightbulb"></i>
+      <h3 className="value-title">Innovation</h3>
+      <p className="value-description">We believe in breaking boundaries through creative problem-solving and forward thinking.</p>
+    </div>
+    <div className="value-card">
+      <i className="fas fa-users"></i>
+      <h3 className="value-title">Collaboration</h3>
+      <p className="value-description">We grow together by working as a united team, building on each other's strengths.</p>
+    </div>
+  </div>
+</section>
+
+<section className="impact-section">
+  <h2 className="impact-title">Our Impact So Far</h2>
+  <div className="impact-grid">
+    <div className="impact-item">
+      <div className="impact-number">5K+</div>
+      <div className="impact-label">Plastic Bottles Saved</div>
+    </div>
+    <div className="impact-item">
+      <div className="impact-number">10+</div>
+      <div className="impact-label">Sustainability Projects</div>
+    </div>
+    <div className="impact-item">
+      <div className="impact-number">100%</div>
+      <div className="impact-label">Community Driven</div>
+    </div>
+  </div>
+</section>
+
+    </div>
+  );
 }

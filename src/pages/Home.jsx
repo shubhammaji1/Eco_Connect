@@ -1,9 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Chatbot from "../components/ChatBot/chatbot";
+import Bot from "../components/ChatBot/Bot";
 import { Link, Element } from "react-scroll";
 import {useInView} from "framer-motion"; // Import framer-motion
 import { TbMoodSearch } from "react-icons/tb";
 import '../../public/css/styles.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faFacebook,
+  faInstagram,
+  faLinkedin,
+  faTwitter,
+} from '@fortawesome/free-brands-svg-icons';
+import {
+  faPhone,
+  faEnvelope,
+  faMapMarkerAlt,
+} from '@fortawesome/free-solid-svg-icons';
 
 const Home = () => {
 
@@ -65,6 +78,7 @@ const Home = () => {
         <div className="logo">
           <span>Eco</span>
           <span>Connect</span>
+          <img  src="images\roboticon.gif" alt="Chatbot"/>
         </div>
         <nav>
           <ul className="nav-links">
@@ -296,7 +310,7 @@ const Home = () => {
           <p>© Copyright 2023 EcoConnect. All Rights Reserved.</p>
         </div>
       </footer>
-      <Chatbot/>
+      <Bot/>
     </div>
   );
 };

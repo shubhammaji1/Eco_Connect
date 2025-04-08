@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Search, ShoppingCart } from 'lucide-react';
+import debounce from 'lodash.debounce';
+import toast, { Toaster } from 'react-hot-toast';
 import '../../public/css/eProducts.css';
 
 const products = [
@@ -14,6 +16,25 @@ const products = [
 export function EProducts() {
   const [searchTerm, setSearchTerm] = useState('');
   const [cart, setCart] = useState([]);
+  const [isCartVisible, setIsCartVisible] = useState(false);
+
+  useEffect(() => {
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
+  const handleSearch = useCallback(
+    debounce((value) => {
+      setSearchTerm(value);
+    }, 300),
+    []
+  );
 
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -31,6 +52,7 @@ export function EProducts() {
     } else {
       setCart([...cart, { ...product, quantity: 1 }]);
     }
+    toast.success(`${product.name} added to cart`);
   };
 
   const decrementFromCart = (product) => {
@@ -42,56 +64,119 @@ export function EProducts() {
             ? { ...item, quantity: item.quantity - 1 }
             : item
         ));
+        toast.success(`Decreased quantity of ${product.name}`);
       } else {
         setCart(cart.filter(item => item.id !== product.id));
+        toast.error(`${product.name} removed from cart`);
       }
     }
   };
 
+  const handleCheckout = () => {
+    if (cart.length === 0) {
+      toast.error("Your cart is empty!");
+      return;
+    }
+  
+    // Simulate payment processing
+    toast.loading("Processing payment...");
+    setTimeout(() => {
+      toast.dismiss();
+      toast.success("Payment successful! 🎉");
+  
+      setCart([]);
+      localStorage.removeItem('essenceCart');
+      setIsCartVisible(false);
+    }, 2000); // simulate 2s payment delay
+  };
+  
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+
   return (
     <div className="e-products">
+      <Toaster />
       <h1>E-Products</h1>
+
       <div className="search-bar">
         <Search className="search-icon" />
         <input
           type="text"
           placeholder="Search products..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => handleSearch(e.target.value)}
         />
       </div>
-      <div className="cart-info">
-        <ShoppingCart /> {cart.reduce((total, item) => total + item.quantity, 0)} items
+
+      <div className="cart-info" onClick={() => setIsCartVisible(!isCartVisible)}>
+        <ShoppingCart className="clickable-cart-icon" />
+        {totalItems} item(s) - ${totalPrice.toFixed(2)}
       </div>
-      <div className="product-grid">
-        {filteredProducts.map((product) => (
-          <div key={product.id} className="product-card">
-            <img src={product.image} alt={product.name} className="product-image" />
-            <h2>{product.name}</h2>
-            <p className="category">{product.category}</p>
-            <p className="price">${product.price.toFixed(2)}</p>
-            <div className="cart-actions">
-              <button className="decrement-cart" onClick={() => decrementFromCart(product)}>
-                -
-              </button>
-              <span className="product-quantity"> {cart.find(item => item.id === product.id)?.quantity || 0}</span>
-              <button className="add-to-cart" onClick={() => addToCart(product)}>
-                +
-              </button>
-            </div>
+
+      {isCartVisible && (
+        <div className="cart-modal">
+          <h2>Your Cart</h2>
+          {cart.length === 0 ? (
+            <p>Your cart is empty.</p>
+          ) : (
+            <ul>
+              {cart.map(item => (
+                <li key={item.id} className="cart-item">
+                  <img src={item.image} alt={item.name} width={50} height={50} />
+                  <div className="cart-item-details">
+                    <p>{item.name}</p>
+                    <p>${item.price.toFixed(2)} × {item.quantity}</p>
+                  </div>
+                  <div className="cart-controls">
+                    <button onClick={() => decrementFromCart(item)}>-</button>
+                    <button onClick={() => addToCart(item)}>+</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <div className="cart-footer">
+            <p><strong>Total:</strong> ${totalPrice.toFixed(2)}</p>
+            <button className="checkout-btn" onClick={handleCheckout}>
+              Checkout
+            </button>
+            <button onClick={() => setIsCartVisible(false)} className="close-cart-btn">
+              Close
+            </button>
           </div>
-        ))}
+        </div>
+      )}
+
+      <div className="product-grid">
+        {filteredProducts.length === 0 ? (
+          <p className="no-results">No products match your search.</p>
+        ) : (
+          filteredProducts.map((product) => (
+            <div key={product.id} className="product-card">
+              <div className="image-wrapper">
+                <img src={product.image} alt={product.name} className="product-image" />
+                {cart.find(item => item.id === product.id) && (
+                  <span className="in-cart-badge">
+                    {cart.find(item => item.id === product.id)?.quantity}
+                  </span>
+                )}
+              </div>
+              <h2>{product.name}</h2>
+              <p className="category">{product.category}</p>
+              <p className="price">${product.price.toFixed(2)}</p>
+              <div className="cart-actions">
+                <button className="decrement-cart" onClick={() => decrementFromCart(product)}>
+                  -
+                </button>
+                <span className="product-quantity">{cart.find(item => item.id === product.id)?.quantity || 0}</span>
+                <button className="add-to-cart" onClick={() => addToCart(product)}>
+                  +
+                </button>
+              </div>
+            </div>
+          ))
+        )}
       </div>
-      {/* <div className="cart-details">
-        <h2>Cart Details</h2>
-        <ul>
-          {cart.map(item => (
-            <li key={item.id}>
-              {item.name} - {item.quantity} x ${item.price.toFixed(2)} = ${(item.quantity * item.price).toFixed(2)}
-            </li>
-          ))}
-        </ul>
-      </div> */}
     </div>
   );
 }

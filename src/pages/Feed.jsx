@@ -4,77 +4,92 @@ import "../../public/css/feed.css";
 
 const FeedSection = () => {
   const [posts, setPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const MY_API_KEY = import.meta.env.VITE_API_KEY;
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [page]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      if (scrollTop + clientHeight + 100 >= scrollHeight && !isLoading) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isLoading]);
 
   const fetchPosts = async () => {
     setIsLoading(true);
     try {
-      // Simulating an API call
-      const response = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve([
-            {
-              id: 1,
-              username: "john",
-              userAvatar: "https://avatar.iran.liara.run/public/33",
-              image: "https://plus.unsplash.com/premium_photo-1669748157617-a3a83cc8ea23?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c2VhJTIwYmVhY2h8ZW58MHx8MHx8fDA%3D",
-              caption: "Enjoying a beautiful day at the beach! 🏖️",
-              likes: 1234,
-              comments: 56,
-              isLiked: false,
-              isBookmarked: false
-            },
-            {
-              id: 2,
-              username: "janedoe",
-              userAvatar: "https://avatar.iran.liara.run/public/30",
-              image: "https://via.assets.so/game.jpg?w=1280&h=720",
-              caption: "Just finished my latest painting. What do you think? 🎨",
-              likes: 987,
-              comments: 43,
-              isLiked: false,
-              isBookmarked: false
-            },
-            {
-              id: 3,
-              username: "artlover",
-              userAvatar: "https://avatar.iran.liara.run/public/73",
-              image: "https://placebear.com/1280/720",
-              caption: "Visited the new art exhibition downtown. Absolutely stunning! 🖼️",
-              likes: 2345,
-              comments: 78,
-              isLiked: false,
-              isBookmarked: false
-            }
-          ]);
-        }, 1000);
-      });
-      setPosts(response);
+      const queries = ['environment', 'recycled products', 'e-waste recycling'];
+      const responses = await Promise.all(
+        queries.map(query =>
+          fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=5&page=${page}&client_id=${MY_API_KEY}`)
+        )
+      );
+  
+      const dataList = await Promise.all(responses.map(res => res.json()));
+  
+      const formatData = (items, type) =>
+        items.map(item => ({
+          id: `${item.id}-${Math.random().toString(36).substring(2, 7)}`,
+          username: item.user.username || "unsplash_user",
+          userAvatar: item.user.profile_image?.medium || '',
+          image: item.urls?.regular || '',
+          caption:
+            item.alt_description ||
+            (type === 'e-waste'
+              ? "Recycle your old electronics responsibly ♻️"
+              : type === 'recycle'
+              ? "Recycled products that save our planet ♻️"
+              : "Preserving the environment for future generations 🌱"),
+          likes: Math.floor(Math.random() * 1000),
+          comments: Math.floor(Math.random() * 100),
+          isLiked: false,
+          isBookmarked: false,
+        }));
+  
+      const allPosts = [
+        ...formatData(dataList[0].results, 'environment'),
+        ...formatData(dataList[1].results, 'recycle'),
+        ...formatData(dataList[2].results, 'e-waste')
+      ].sort(() => 0.5 - Math.random());
+  
+      setPosts(prevPosts => [...prevPosts, ...allPosts]);
+  
     } catch (err) {
+      console.error(err);
       setError("Failed to fetch posts. Please try again later.");
     } finally {
       setIsLoading(false);
     }
   };
-
+  
   const handleLike = (postId) => {
-    setPosts(prevPosts =>
-      prevPosts.map(post =>
+    setPosts((prevPosts) =>
+      prevPosts.map((post) =>
         post.id === postId
-          ? { ...post, isLiked: !post.isLiked, likes: post.isLiked ? post.likes - 1 : post.likes + 1 }
+          ? {
+              ...post,
+              isLiked: !post.isLiked,
+              likes: post.isLiked ? post.likes - 1 : post.likes + 1,
+            }
           : post
       )
     );
   };
 
   const handleBookmark = (postId) => {
-    setPosts(prevPosts =>
-      prevPosts.map(post =>
+    setPosts((prevPosts) =>
+      prevPosts.map((post) =>
         post.id === postId
           ? { ...post, isBookmarked: !post.isBookmarked }
           : post
@@ -82,21 +97,17 @@ const FeedSection = () => {
     );
   };
 
-  if (isLoading) {
-    return <div className="feed-section">Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="feed-section">{error}</div>;
-  }
-
   return (
     <div className="feed-section">
-      <h2 className="feed-title">Your Feed</h2>
+      <h2 className="feed-title">Eco & E-Waste Recycling Feed</h2>
       {posts.map((post) => (
         <div key={post.id} className="post">
           <div className="post-header">
-            <img src={post.userAvatar} alt={post.username} className="user-avatar" />
+            <img
+              src={post.userAvatar}
+              alt={post.username}
+              className="user-avatar"
+            />
             <span className="username">{post.username}</span>
           </div>
           <img src={post.image} alt="Post content" className="post-image" />
@@ -121,6 +132,8 @@ const FeedSection = () => {
           </p>
         </div>
       ))}
+      {isLoading && <p className="loading-text">Loading more posts...</p>}
+      {error && <p className="error-text">{error}</p>}
     </div>
   );
 };

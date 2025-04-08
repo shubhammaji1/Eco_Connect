@@ -1,12 +1,88 @@
-html{
+html {
   scroll-snap-type: Y mandatory;
+  scroll-behavior: smooth;
 }
+
+.video-feed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  gap: 20px;
+  padding: 20px;
+}
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.like-btn, .share-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.like-btn:hover {
+  color: red;
+}
+
+.share-btn:hover {
+  color: blue;
+}
+
+
+/* Video Cards */
+.video-card {
+  width: 400px;
+  background: #1c1c1c;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: white;
+}
+
+/* Video Player */
 .video-player {
   height: 100vh;
   width: 100%;
   max-width: 300px;
   margin: 0 auto;
   scroll-snap-align: start;
+  border-radius: 8px;
+}
+
+/* Image Grid for Reels with Multiple Photos */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.reel-image {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+/* Caption and Music */
+.video-card p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ddd;
+}
+
+/* Video Hover Effect */
+.video:hover {
+  cursor: pointer;
 }
 
 .video {
@@ -19,11 +95,6 @@ html{
   flex-direction: column;
 }
 
-.video:hover {
-  cursor: pointer;
-}
-
-
 .video-content {
   margin-left: 270px;
   width: calc(100% - 270px);
@@ -33,13 +104,106 @@ html{
   align-items: flex-start;
   padding: 20px;
 }
+/* Caption Styling */
+.caption {
+  font-size: 16px;
+  color: #fff;
+  margin-top: 10px;
+  text-align: left;
+}
+/* 🌟 Glassy Share Modal Overlay */
+.share-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Semi-transparent dark overlay */
+  backdrop-filter: blur(10px); /* Blurry effect */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 1000;
+}
 
-/* Responsive styles */
+/* 🌟 Glassy Share Modal */
+.share-modal {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.15); /* Semi-transparent */
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  text-align: center;
+  backdrop-filter: blur(15px); /* Blurry glass effect */
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  animation: slideUp 0.3s ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 🌟 Slide-up animation */
+@keyframes slideUp {
+  from {
+      transform: translateY(100%);
+  }
+  to {
+      transform: translateY(0);
+  }
+}
+
+/* 🌟 Share Header */
+.share-header h3 {
+  color: white;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 🌟 Share Buttons */
+.share-modal button {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 16px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease-in-out;
+}
+
+.share-modal button:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.05);
+}
+
+/* 🌟 Cancel Button */
+.close-btn {
+  color: red;
+  font-weight: bold;
+}
+
+/* 🌟 Responsive Adjustments */
+@media (max-width: 575.98px) {
+  .share-modal {
+      max-width: 95%;
+  }
+}
+
+
+
+
+/* Responsive Styles */
 
 /* Large devices (desktops, less than 1200px) */
 @media (max-width: 1199.98px) {
   .video {
     width: calc(50% - 20px);
+  }
+  .video-player {
+    scroll-snap-align: start;
   }
 }
 
@@ -55,6 +219,14 @@ html{
     width: calc(50% - 10px);
     margin: 5px;
   }
+
+  .video-player {
+    scroll-snap-align: start;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
 }
 
 /* Small devices (landscape phones, less than 768px) */
@@ -62,13 +234,17 @@ html{
   .video-player {
     height: auto;
     max-width: 100%;
+    scroll-snap-align: start;
   }
 
   .video {
     width: 100%;
     margin: 10px 0;
   }
-  
+
+  .image-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Extra small devices (portrait phones, less than 576px) */
@@ -77,8 +253,16 @@ html{
     padding: 5px;
   }
 
+  .video-player {
+    scroll-snap-align: start;
+  }
+
   .video {
     aspect-ratio: 1 / 1;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
@@ -94,6 +278,10 @@ html{
     margin-left: 0;
     width: 100%;
   }
+
+  .video-player {
+    scroll-snap-align: start;
+  }
 }
 
 /* For very small screens, ensure minimum video size */
@@ -101,5 +289,9 @@ html{
   .video {
     min-width: 250px;
     min-height: 250px;
+  }
+
+  .video-player {
+    scroll-snap-align: start;
   }
 }

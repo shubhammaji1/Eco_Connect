@@ -10,7 +10,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import MenuIcon from '@mui/icons-material/Menu';
 import "../App.css";
 import Video from '../components/video/video';
-import Chatbot from "../components/ChatBot/chatbot";
+import Bot from "../components/ChatBot/Bot";
 import FeedSection from "./Feed";
 import CreateReelSection from "./CreateReels";
 import Profile from "./Profile";
@@ -86,8 +86,8 @@ const SellOption = ({ isFolded, handleItemClick }) => {
 
 export const SidebarData = [
     { title: 'Home', icon: <HomeIcon />, path: "/"},
-    { title: 'Reel', icon: <VideoLibraryIcon />, path: "#reel" },
-    { title: 'Feeds', icon: <FeedIcon />, path: "#feed" },
+    { title: 'Reel', icon: <VideoLibraryIcon />, path: "#reel"},
+    { title: 'Feeds', icon: <FeedIcon />, path: "#reel" },
     { title: 'Create', icon: <AddBoxIcon />, path: "#create" },
 ];
 
@@ -170,18 +170,6 @@ const Blog = () => {
                 return (
                     <div className='video-content'>
                         <div className='video'>
-                            <Video /> 
-                            <Video /> 
-                            <Video />
-                        </div>
-                        <div className="video">
-                            <Video /> 
-                            <Video /> 
-                            <Video />
-                        </div>
-                        <div className="video">
-                            <Video /> 
-                            <Video /> 
                             <Video />
                         </div>
                     </div>
@@ -200,7 +188,10 @@ const Blog = () => {
             )}
             <div className={`main-content ${!isLoggedIn ? 'full-width' : ''} ${isSidebarFolded ? 'sidebar-folded' : ''}`}>
                 {renderContent()}
-                {isLoggedIn && <Chatbot />}
+                {isLoggedIn && <Bot/>}
+                <div className="AIchatbot">
+                    <img src="images\roboticon.gif" alt="Chatbot"/>
+                </div>
             </div>
         </div>
     );

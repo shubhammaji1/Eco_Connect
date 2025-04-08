@@ -151,6 +151,106 @@
     margin: 0 auto;
     line-height: 1.6;
   }
+  /* Core Values Section */
+.values-section {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: #f0f0f0;
+}
+
+.values-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+}
+
+.values-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.value-card {
+  background: white;
+  padding: 2rem;
+  width: 250px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.value-card:hover {
+  transform: translateY(-8px);
+}
+
+.value-card i {
+  font-size: 2rem;
+  color: #4CAF50;
+  margin-bottom: 1rem;
+}
+
+.value-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.value-description {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Impact Section */
+.impact-section {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: #1b1b1b;
+  color: white;
+}
+
+.impact-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #4CAF50;
+}
+
+.impact-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.impact-item {
+  background-color: #2c3e50;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 180px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.impact-number {
+  font-size: 2rem;
+  color: #4CAF50;
+  margin-bottom: 0.5rem;
+}
+
+.impact-label {
+  font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .values-grid, .impact-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
   
 
   @media (max-width: 768px) {
